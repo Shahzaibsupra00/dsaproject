@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stationery Cart - LIFO Stack</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+      }
+
+      h3 {
+        margin-bottom: 20px;
+        color: #007bff;
+      }
+
+      .item-list,
+      .cart {
+        width: 100%;
+        max-width: 600px;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin-bottom: 30px;
+      }
+
+      .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .item:hover {
+        background-color: #e1f7ff;
+        transform: scale(1.05);
+      }
+
+      .item button {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .item button:hover {
+        background-color: #0056b3;
+      }
+
+      .cart h3 {
+        color: #007bff;
+        margin-bottom: 20px;
+      }
+
+      .cart ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .cart ul li {
+        font-size: 18px;
+        padding: 8px 0;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .cart strong {
+        display: block;
+        font-size: 20px;
+        margin-top: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="item-list">
+      <h3>Available Items:</h3>
+      <div id="item-selection"></div>
+    </div>
+
+    <div class="cart">
+      <h3>Your Cart</h3>
+      <ul id="cart-items"></ul>
+      <button onclick="removeFromCart()">Remove Last Item</button>
+      <strong id="total-amount">Total: 0 Rs.</strong>
+    </div>
+
+    <script>
+      // Array of items and their prices
+      const items = [
+        { name: "Notebook", price: 100 },
+        { name: "Pen", price: 40 },
+        { name: "Eraser", price: 10 },
+        { name: "Sharpener", price: 20 },
+        { name: "Pencil", price: 30 },
+        { name: "Marker", price: 20 },
+        { name: "Glue Stick", price: 70 },
+      ];
+
+      const cart = [];
+      const itemSelectionContainer = document.getElementById("item-selection");
+      const cartItemsContainer = document.getElementById("cart-items");
+      const totalAmountContainer = document.getElementById("total-amount");
+
+      // Function to display available items dynamically
+      function displayItems() {
+        itemSelectionContainer.innerHTML = "";
+        items.forEach((item, index) => {
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "item";
+
+          const label = document.createElement("span");
+          label.textContent = `${item.name} - ${item.price} Rs.`;
+
+          const addButton = document.createElement("button");
+          addButton.textContent = "Add";
+          addButton.onclick = () => addToCart(index);
+
+          itemDiv.appendChild(label);
+          itemDiv.appendChild(addButton);
+          itemSelectionContainer.appendChild(itemDiv);
+        });
+      }
+
+      // Function to display cart items
+      function displayCart() {
+        cartItemsContainer.innerHTML = "";
+        let totalAmount = 0;
+
+        cart.forEach((item) => {
+          const cartItem = document.createElement("li");
+          cartItem.textContent = `${item.name} - ${item.price} Rs.`;
+          cartItemsContainer.appendChild(cartItem);
+
+          totalAmount += item.price;
+        });
+
+        totalAmountContainer.textContent = `Total: ${totalAmount} Rs.`;
+      }
+
+      // Function to add an item to the cart
+      function addToCart(index) {
+        cart.push(items[index]);
+        displayCart();
+      }
+
+      // Function to remove the last item from the cart (LIFO)
+      function removeFromCart() {
+        if (cart.length === 0) {
+          alert("The cart is empty. Nothing to remove.");
+          return;
+        }
+        cart.pop();
+        displayCart();
+      }
+
+      // Initial display of items and cart
+      displayItems();
+      displayCart();
+    </script>
+  </body>
+</html>

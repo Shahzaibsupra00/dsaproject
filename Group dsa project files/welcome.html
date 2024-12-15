@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome</title>
+    <style>
+      /* Reset default styles */
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body and Background Image */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #1a2a6c,
+          #b21f1f,
+          #fdbb2d
+        ); /* Gradient for background */
+        background-size: cover;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Apply blur effect */
+      .background-blur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay */
+        backdrop-filter: blur(10px); /* Apply blur */
+        z-index: -1; /* Place behind content */
+      }
+
+      .welcome-container {
+        background: rgba(
+          255,
+          255,
+          255,
+          0.3
+        ); /* Light semi-transparent white background */
+        padding: 40px 60px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: fadeIn 2s ease-in-out;
+        z-index: 1;
+      }
+
+      h1 {
+        font-size: 50px;
+        margin-bottom: 20px;
+        color: #ffffff; /* White text */
+        animation: fadeInUp 2s ease-in-out;
+      }
+
+      h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #e0e0e0; /* Soft gray for subheading */
+        animation: fadeInUp 2s ease-in-out 1s;
+      }
+
+      h3 {
+        font-size: 24px;
+        margin: 5px 0;
+        opacity: 0;
+        color: #ffffff; /* White text for names */
+        animation: fadeInUp 2s ease-in-out 1.5s forwards;
+      }
+
+      h3:nth-child(3) {
+        animation-delay: 2s;
+      }
+
+      h3:nth-child(4) {
+        animation-delay: 2.5s;
+      }
+
+      h3:nth-child(5) {
+        animation-delay: 3s;
+      }
+
+      /* Keyframes for the fade-in and upward motion */
+      @keyframes fadeInUp {
+        0% {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Animation for the entire container */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Button styles */
+      .button-container {
+        margin-top: 30px;
+        opacity: 0;
+        animation: fadeInUp 2s ease-in-out 3.5s forwards;
+      }
+
+      button {
+        background-color: #28a745; /* Green button color */
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #218838; /* Darker green on hover */
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        background-color: #1e7e34; /* Even darker green on active */
+        transform: translateY(2px);
+      }
+
+      /* Media Queries for responsiveness */
+      @media (max-width: 600px) {
+        body {
+          flex-direction: column;
+          justify-content: flex-start;
+        }
+
+        .welcome-container {
+          width: 90%;
+        }
+
+        h1 {
+          font-size: 40px;
+        }
+
+        h2 {
+          font-size: 22px;
+        }
+
+        h3 {
+          font-size: 18px;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background blur effect -->
+    <div class="background-blur"></div>
+
+    <div class="welcome-container">
+      <h1>DSA Project</h1>
+      <h2>Created By</h2>
+      <h3>Shahzaib Hassan - 23011598-001</h3>
+      <h3>Muhammad Abdullah - 23011598-033</h3>
+      <h3>Zain Jabbar - 23011598-034</h3>
+    </div>
+  </body>
+</html>
