@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ice Cream Shop</title>
+    <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+        color: #333;
+        text-align: center;
+        padding: 40px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        color: #1e3a8a;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Ice Cream Container */
+      .ice-cream-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+      }
+
+      /* Individual Ice Cream Style */
+      .ice-cream {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        width: 180px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        border: 2px solid #007bff;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.3s ease;
+        font-size: 1rem;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .ice-cream:hover {
+        transform: translateY(-5px);
+        background-color: #e3f2fd;
+      }
+
+      .ice-cream.selected {
+        background-color: #bbdefb;
+        transform: translateY(-5px) scale(1.05);
+      }
+
+      .ice-cream div {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .ice-cream .price {
+        color: #007bff;
+        font-size: 1rem;
+        margin-top: 8px;
+      }
+
+      /* Bill Section */
+      .bill {
+        background-color: #ffffff;
+        border-radius: 12px;
+        border: 2px dashed #007bff;
+        padding: 20px;
+        font-size: 1.2rem;
+        width: 100%;
+        max-width: 400px;
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .bill strong {
+        font-size: 1.3rem;
+        color: #1e3a8a;
+      }
+
+      /* Animations */
+      @keyframes selectAnimation {
+        0% {
+          transform: scale(1);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .ice-cream-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .ice-cream {
+          width: 250px;
+          margin-bottom: 20px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the Ice Cream Shop</h1>
+    <p>
+      Select up to 3 ice cream flavors to calculate your total. Each ice cream
+      costs Rs 50.
+    </p>
+
+    <div class="ice-cream-container">
+      <div class="ice-cream" data-flavor="Vanilla">
+        <div>Vanilla</div>
+        <div class="price">Rs 50</div>
+      </div>
+      <div class="ice-cream" data-flavor="Chocolate">
+        <div>Chocolate</div>
+        <div class="price">Rs 50</div>
+      </div>
+      <div class="ice-cream" data-flavor="Strawberry">
+        <div>Strawberry</div>
+        <div class="price">Rs 50</div>
+      </div>
+      <div class="ice-cream" data-flavor="Mango">
+        <div>Mango</div>
+        <div class="price">Rs 50</div>
+      </div>
+    </div>
+
+    <div class="bill" id="bill"><strong>Total:</strong> Rs 0</div>
+
+    <script>
+      // Array of available ice creams
+      const iceCreams = [
+        { flavor: "Vanilla", price: 50 },
+        { flavor: "Chocolate", price: 50 },
+        { flavor: "Strawberry", price: 50 },
+        { flavor: "Mango", price: 50 },
+      ];
+
+      // Selected ice creams
+      const selectedIceCreams = [];
+
+      // Bill container
+      const billElement = document.getElementById("bill");
+
+      // Handle ice cream selection and unselection
+      document.querySelectorAll(".ice-cream").forEach((element) => {
+        element.addEventListener("click", () => {
+          const flavor = element.getAttribute("data-flavor");
+
+          // Check if the flavor is already selected
+          if (selectedIceCreams.includes(flavor)) {
+            // Unselect the ice cream
+            selectedIceCreams.splice(selectedIceCreams.indexOf(flavor), 1);
+            element.classList.remove("selected"); // Remove selected class
+            updateBill();
+          } else if (selectedIceCreams.length < 3) {
+            // Select the ice cream
+            selectedIceCreams.push(flavor);
+            element.classList.add("selected"); // Add selected class
+            updateBill();
+          } else {
+            alert("You can only select up to 3 ice creams!");
+          }
+        });
+      });
+
+      // Update bill function
+      function updateBill() {
+        const total = selectedIceCreams.length * 50;
+        billElement.innerHTML = `        
+          <strong>Purchased:</strong> ${selectedIceCreams.join(", ")}<br>
+          <strong>Total:</strong> Rs ${total}
+        `;
+      }
+    </script>
+  </body>
+</html>
