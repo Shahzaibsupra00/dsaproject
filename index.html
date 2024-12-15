@@ -78,13 +78,22 @@
         text-align: center;
         transition: all 0.3s ease;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        opacity: 0.6;
+        opacity: 0.5;
         pointer-events: none;
       }
 
       .sidebar button.enabled {
         opacity: 1;
         pointer-events: auto;
+      }
+
+      .sidebar button.current {
+        border: 2px solid #fff; /* Highlight the current button with a white border */
+        background: linear-gradient(
+          145deg,
+          #155d2c,
+          #1c7430
+        ); /* Different background color for current button */
       }
 
       .sidebar button:hover {
@@ -100,7 +109,6 @@
       /* Content section */
       .content {
         flex: 3;
-        padding: 5px;
         background-color: #ffffff;
         display: flex;
         align-items: center;
@@ -137,6 +145,14 @@
         justify-content: center;
         transition: background-color 0.3s ease;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+      .sidebar button.current {
+        border: 2px solid #fff; /* White border to highlight */
+        background: linear-gradient(
+          145deg,
+          #155d2c,
+          #1c7430
+        ); /* Different background color */
       }
 
       .small-button:hover {
@@ -190,9 +206,17 @@
         const frame = document.getElementById("content-frame");
         frame.src = page;
 
-        // Disable the current button
-        buttons[index].classList.remove("enabled");
-        buttons[index].disabled = true;
+        // Remove 'enabled' and 'current' class from all buttons
+        buttons.forEach((button) => {
+          button.classList.remove("enabled");
+          button.classList.remove("current");
+          button.disabled = true;
+        });
+
+        // Add 'current' and 'enabled' class to the clicked button
+        buttons[index].classList.add("current");
+        buttons[index].classList.add("enabled");
+        buttons[index].disabled = false;
 
         // Enable the next button, if it exists
         if (index + 1 < buttons.length) {
@@ -214,7 +238,7 @@
           document.getElementById("loader").style.display = "none"; // Hide loader
           document.getElementById("content").style.display = "flex"; // Show content
           document.body.style.backgroundColor = "#e8f4f3"; // Restore background color after loader
-        }, 3000); // 6 seconds delay
+        }, 3000); // 3 seconds delay
       };
 
       // Redirect function for the small button

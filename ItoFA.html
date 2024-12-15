@@ -12,7 +12,7 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
+        background-color: #e9f7fb; /* Light pastel blue background */
         margin: 0;
         padding: 20px;
         display: flex;
@@ -20,18 +20,22 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
+        box-sizing: border-box;
       }
 
       #network {
         width: 100%;
         height: 80vh;
-        border: 1px solid lightgray;
-        margin-bottom: 10px;
+        border: 1px solid #b3d8f0; /* Light border for the network */
+        background-color: #ffffff; /* White background for the network container */
+        margin-bottom: 20px;
+        border-radius: 10px; /* Rounded corners */
       }
 
       #result {
         font-size: 18px;
         font-weight: bold;
+        color: #333; /* Dark text color for contrast */
       }
     </style>
   </head>
@@ -137,8 +141,9 @@
           shape: "circle",
           color: {
             border: "#1d1d1d",
+            background: "#a7d8e8" /* Light blue node background */,
           },
-          size: 25,
+          size: 30,
           font: {
             size: 16,
           },

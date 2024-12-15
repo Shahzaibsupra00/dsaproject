@@ -18,13 +18,14 @@
 
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f8f9fa;
+        background-color: #f4f7f6; /* Light background color */
         color: #333;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         padding: 20px;
+        transition: background-color 1s ease;
       }
 
       #network {
@@ -51,6 +52,7 @@
     </style>
   </head>
   <body>
+    <div class="header">Graph Visualization</div>
     <div id="network"></div>
 
     <script>
@@ -110,22 +112,34 @@
           borderWidth: 2,
           color: {
             border: "#333",
-            background: "#ffffff",
+            background: "#ffffff" /* Light node background */,
             highlight: {
               border: "#ff6f61",
-              background: "#ffd1cf",
+              background: "#ffd1cf" /* Light highlight color */,
             },
             hover: {
               border: "#007bff",
-              background: "#cce5ff",
+              background: "#cce5ff" /* Light hover color */,
             },
           },
         },
         physics: {
           enabled: true,
+          barnesHut: {
+            gravitationalConstant: -1000, // Adjust to control the distance between nodes
+            centralGravity: 0.1, // Pull nodes slightly toward the center
+            springLength: 170, // Length of edges between nodes, adjust for pleasant spacing
+            springConstant: 0.05, // Controls the strength of the spring between nodes
+          },
+          stabilization: {
+            enabled: true,
+            iterations: 1000,
+            updateInterval: 25,
+          },
         },
         layout: {
-          improvedLayout: true,
+          improvedLayout: true, // Improve automatic layout
+          randomSeed: 2, // Ensures consistency across renders
         },
         interaction: {
           hover: true,
@@ -153,7 +167,7 @@
         }
 
         index++;
-        setTimeout(addNext, 200); // Add each element with a 500ms delay
+        setTimeout(addNext, 200); // Add each element with a 200ms delay
       }
 
       addNext();
