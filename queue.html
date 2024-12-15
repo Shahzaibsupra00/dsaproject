@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Selection - FIFO Queue</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      h3 {
+        color: #0056b3;
+        margin-bottom: 20px;
+      }
+
+      .book-list {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 90%;
+      }
+
+      .book-column {
+        flex: 1;
+        min-width: 300px;
+        margin: 10px;
+      }
+
+      .book {
+        display: flex;
+        align-items: center;
+        background: #e8f4ff;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .book:hover {
+        background: #d1ecff;
+        transform: scale(1.05);
+      }
+
+      .book input {
+        margin-right: 10px;
+      }
+
+      .button-container {
+        margin-top: 20px;
+      }
+
+      button {
+        background: linear-gradient(145deg, #007bff, #0056b3);
+        color: #fff;
+        padding: 12px 24px;
+        font-size: 16px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      .error {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      .bill {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .bill h3 {
+        color: #0056b3;
+      }
+
+      .bill ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .bill ul li {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .bill strong {
+        margin-top: 20px;
+        display: block;
+        font-size: 18px;
+      }
+
+      @media (max-width: 600px) {
+        .book-list {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .book-column {
+          min-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Select Books</h3>
+
+    <div class="book-list">
+      <div class="book-column" id="book-selection-left"></div>
+      <div class="book-column" id="book-selection-right"></div>
+    </div>
+
+    <div class="button-container">
+      <button onclick="removeFromCart()">Remove First Book</button>
+      <button onclick="generateBill()">Generate Bill</button>
+      <div id="error-message" class="error"></div>
+    </div>
+
+    <div id="bill" class="bill"></div>
+
+    <script>
+      // Generate a random price between 150 and 200
+      function getRandomPrice() {
+        return Math.floor(Math.random() * 51) + 150;
+      }
+
+      // Book data
+      const books = [
+        { name: "The Great Adventure", price: getRandomPrice() },
+        { name: "Mystery of the Forest", price: getRandomPrice() },
+        { name: "Science for Kids", price: getRandomPrice() },
+        { name: "History Unveiled", price: getRandomPrice() },
+        { name: "Exploring the Universe", price: getRandomPrice() },
+        { name: "The Lost Treasure", price: getRandomPrice() },
+        { name: "Cooking Masterclass", price: getRandomPrice() },
+        { name: "Art of Photography", price: getRandomPrice() },
+        { name: "Programming Made Easy", price: getRandomPrice() },
+        { name: "A Journey Through Time", price: getRandomPrice() },
+      ];
+
+      // Create a queue to store selected books (FIFO)
+      const selectedBooksQueue = [];
+
+      // Render books into two columns
+      const leftColumn = document.getElementById("book-selection-left");
+      const rightColumn = document.getElementById("book-selection-right");
+
+      books.forEach((book, index) => {
+        const bookDiv = document.createElement("div");
+        bookDiv.className = "book";
+        bookDiv.innerHTML = `      
+        <input type="checkbox" id="book-${index}" value="${index}" onchange="handleSelection(event)">
+        <label for="book-${index}">${book.name} - ${book.price} Rs</label>
+      `;
+        (index < 5 ? leftColumn : rightColumn).appendChild(bookDiv);
+      });
+
+      // Handle book selection using the queue
+      function handleSelection(event) {
+        const bookIndex = event.target.value;
+        const book = books[bookIndex];
+
+        if (event.target.checked) {
+          // Enqueue the book if selected
+          selectedBooksQueue.push({ ...book, checkboxId: event.target.id });
+        } else {
+          // Dequeue the book if unselected
+          const bookIndexInQueue = selectedBooksQueue.findIndex(
+            (b) => b.name === book.name
+          );
+          if (bookIndexInQueue !== -1) {
+            selectedBooksQueue.splice(bookIndexInQueue, 1);
+          }
+        }
+      }
+
+      // Remove the first book from the queue (FIFO)
+      function removeFromCart() {
+        const errorElement = document.getElementById("error-message");
+        errorElement.textContent = "";
+
+        if (selectedBooksQueue.length === 0) {
+          errorElement.textContent = "The cart is empty. Nothing to remove.";
+          return;
+        }
+
+        const removedBook = selectedBooksQueue.shift();
+        const checkbox = document.getElementById(removedBook.checkboxId);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+
+        if (selectedBooksQueue.length === 0) {
+          const billElement = document.getElementById("bill");
+          billElement.style.display = "none";
+        } else {
+          displayBill();
+        }
+      }
+
+      // Generate the bill
+      function generateBill() {
+        const errorElement = document.getElementById("error-message");
+        errorElement.textContent = "";
+
+        if (selectedBooksQueue.length === 0) {
+          errorElement.textContent = "Please select at least one book.";
+          const billElement = document.getElementById("bill");
+          billElement.style.display = "none";
+          return;
+        }
+
+        displayBill();
+      }
+
+      // Display the bill
+      function displayBill() {
+        const billElement = document.getElementById("bill");
+        const total = selectedBooksQueue.reduce(
+          (sum, book) => sum + book.price,
+          0
+        );
+
+        billElement.innerHTML = `
+        <h3>Your Bill</h3>
+        <ul>
+          ${selectedBooksQueue
+            .map((book) => `<li>${book.name} - ${book.price} Rs</li>`)
+            .join("")}
+        </ul>
+        <strong>Total: ${total} Rs</strong>
+      `;
+        billElement.style.display = "block";
+      }
+    </script>
+  </body>
+</html>

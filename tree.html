@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stationery Tree</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+      }
+
+      .node {
+        display: inline-block;
+        padding: 15px 20px;
+        margin: 10px;
+        border: 2px solid #007bff;
+        border-radius: 12px;
+        text-align: center;
+        background-color: #eaf4fc;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        opacity: 0;
+        transform: scale(0.8);
+        animation: fadeInGrow 0.5s ease-out forwards;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .node:hover {
+        transform: scale(1.05);
+      }
+
+      @keyframes fadeInGrow {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .tree {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .tree-level {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .line {
+        height: 20px;
+        width: 2px;
+        background-color: #007bff;
+        position: relative;
+        margin: 0 auto;
+      }
+
+      .line::before,
+      .line::after {
+        content: "";
+        width: 50px;
+        height: 2px;
+        background-color: #007bff;
+        position: absolute;
+        top: 0;
+      }
+
+      .line::before {
+        left: -50px;
+      }
+
+      .line::after {
+        right: -50px;
+      }
+
+      .footer {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #6c757d;
+        text-align: center;
+      }
+
+      .footer a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tree" id="tree"></div>
+
+    <script>
+      const treeData = {
+        data: { name: "Notebook", price: 100 },
+        children: [
+          {
+            data: { name: "Pen", price: 40 },
+            children: [
+              { data: { name: "Eraser", price: 10 }, children: [] },
+              { data: { name: "Sharpener", price: 20 }, children: [] },
+            ],
+          },
+          {
+            data: { name: "Pencil", price: 30 },
+            children: [
+              { data: { name: "Marker", price: 20 }, children: [] },
+              { data: { name: "Glue Stick", price: 70 }, children: [] },
+            ],
+          },
+        ],
+      };
+
+      function createTreeHTML(tree) {
+        const rootElement = document.createElement("div");
+        rootElement.className = "node";
+        rootElement.innerHTML = `<strong>${tree.data.name}</strong><br>${tree.data.price} Rs.`;
+
+        if (tree.children && tree.children.length > 0) {
+          const childrenContainer = document.createElement("div");
+          childrenContainer.className = "tree-level";
+          tree.children.forEach((child) => {
+            const childElement = createTreeHTML(child);
+            childrenContainer.appendChild(childElement);
+          });
+          rootElement.appendChild(childrenContainer);
+        }
+
+        return rootElement;
+      }
+
+      const treeContainer = document.getElementById("tree");
+      treeContainer.appendChild(createTreeHTML(treeData));
+    </script>
+  </body>
+</html>

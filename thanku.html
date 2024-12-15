@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You</title>
+    <style>
+      /* Reset default styles */
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #6a11cb,
+          #2575fc
+        ); /* Gradient background */
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      /* Animation for fading in the body */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Container for the thank you message */
+      .thank-you-container {
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        padding: 40px 60px;
+        border-radius: 15px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        animation: slideIn 2s ease-out;
+      }
+
+      /* Keyframe animation for sliding in */
+      @keyframes slideIn {
+        0% {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+        animation: bounceIn 1s ease-out;
+      }
+
+      /* Animation for bouncing the text */
+      @keyframes bounceIn {
+        0% {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        60% {
+          transform: translateY(-10px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive design for smaller screens */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 50px;
+        }
+        .thank-you-container {
+          padding: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="thank-you-container">
+      <h1>Thank You!</h1>
+    </div>
+  </body>
+</html>
