@@ -7,7 +7,7 @@
     <style>
       body {
         font-family: "Arial", sans-serif;
-        background-color: #f0f0f0; /* Simple light gray background */
+        background-color: #f0f0f0;
         color: #333;
         margin: 0;
         padding: 0;
@@ -194,6 +194,16 @@
       function handleSelection(event) {
         const bookIndex = event.target.value;
         const book = books[bookIndex];
+        const errorElement = document.getElementById("error-message");
+
+        // If the book is selected and the cart is full (4 items), show an error
+        if (event.target.checked && selectedBooksQueue.length >= 4) {
+          errorElement.textContent = "You can only add up to 4 books to the cart.";
+          event.target.checked = false;
+          return; // Do not add the book if the cart is full
+        } else {
+          errorElement.textContent = ""; // Clear error message if valid
+        }
 
         if (event.target.checked) {
           // Enqueue the book if selected
@@ -248,7 +258,7 @@
         displayBill();
       }
 
-      // Display the bill
+      // Display the bill with due date and return date
       function displayBill() {
         const billElement = document.getElementById("bill");
         const total = selectedBooksQueue.reduce(
@@ -256,15 +266,25 @@
           0
         );
 
+        // Get current date and calculate return date
+        const currentDate = new Date();
+        const returnDate = new Date(currentDate);
+        returnDate.setDate(currentDate.getDate() + 7); // Add 7 days
+
+        const dueDateStr = currentDate.toLocaleDateString("en-GB");
+        const returnDateStr = returnDate.toLocaleDateString("en-GB");
+
         billElement.innerHTML = `
-        <h3>Your Bill</h3>
-        <ul>
-          ${selectedBooksQueue
-            .map((book) => `<li>${book.name} - ${book.price} Rs</li>`)
-            .join("")}
-        </ul>
-        <strong>Total: ${total} Rs</strong>
-      `;
+          <h3>Your Bill</h3>
+          <ul>
+            ${selectedBooksQueue
+              .map((book) => `<li>${book.name} - ${book.price} Rs</li>`)
+              .join("")}
+          </ul>
+          <strong>Total: ${total} Rs</strong>
+          <p><strong>Due Date:</strong> ${dueDateStr}</p>
+          <p><strong>Return Date:</strong> ${returnDateStr}</p>
+        `;
         billElement.style.display = "block";
       }
     </script>
