@@ -7,7 +7,7 @@
     <style>
       body {
         font-family: "Arial", sans-serif;
-        background-color: #f0f0f0; /* Changed background color */
+        background-color: #f0f0f0;
         margin: 0;
         padding: 0;
         display: flex;
@@ -48,8 +48,8 @@
         transform: scale(1.05);
       }
 
-      .item button {
-        padding: 5px 10px;
+      button {
+        padding: 8px 15px;
         background-color: #007bff;
         color: white;
         border: none;
@@ -59,13 +59,14 @@
         transition: all 0.3s ease;
       }
 
-      .item button:hover {
+      button:hover {
         background-color: #0056b3;
       }
 
-      .cart h3 {
-        color: #007bff;
-        margin-bottom: 20px;
+      .error {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
       }
 
       .cart ul {
@@ -100,11 +101,12 @@
       <h3>Your Cart</h3>
       <ul id="cart-items"></ul>
       <button onclick="removeFromCart()">Remove Last Item</button>
-      <strong id="total-amount">Total: 0 Rs.</strong>
+      <button onclick="generateBill()">Generate Bill</button>
+      <strong id="total-amount" style="display: none;">Total: 0 Rs.</strong>
+      <div id="error-message" class="error"></div>
     </div>
 
     <script>
-      // Array of items and their prices
       const items = [
         { name: "Notebook", price: 100 },
         { name: "Pen", price: 40 },
@@ -119,8 +121,8 @@
       const itemSelectionContainer = document.getElementById("item-selection");
       const cartItemsContainer = document.getElementById("cart-items");
       const totalAmountContainer = document.getElementById("total-amount");
+      const errorMessage = document.getElementById("error-message");
 
-      // Function to display available items dynamically
       function displayItems() {
         itemSelectionContainer.innerHTML = "";
         items.forEach((item, index) => {
@@ -140,39 +142,47 @@
         });
       }
 
-      // Function to display cart items
       function displayCart() {
         cartItemsContainer.innerHTML = "";
-        let totalAmount = 0;
-
         cart.forEach((item) => {
           const cartItem = document.createElement("li");
           cartItem.textContent = `${item.name} - ${item.price} Rs.`;
           cartItemsContainer.appendChild(cartItem);
-
-          totalAmount += item.price;
         });
-
-        totalAmountContainer.textContent = `Total: ${totalAmount} Rs.`;
       }
 
-      // Function to add an item to the cart
       function addToCart(index) {
+        if (cart.length >= 4) {
+          errorMessage.textContent = "You can only add up to 4 items.";
+          return;
+        }
+        errorMessage.textContent = ""; // Clear error message
         cart.push(items[index]);
         displayCart();
       }
 
-      // Function to remove the last item from the cart (LIFO)
       function removeFromCart() {
         if (cart.length === 0) {
-          alert("The cart is empty. Nothing to remove.");
+          errorMessage.textContent = "The cart is empty. Nothing to remove.";
           return;
         }
+        errorMessage.textContent = ""; // Clear error message
         cart.pop();
         displayCart();
       }
 
-      // Initial display of items and cart
+      function generateBill() {
+        if (cart.length === 0) {
+          errorMessage.textContent = "Your cart is empty. Add items to generate a bill.";
+          totalAmountContainer.style.display = "none"; // Hide total amount
+          return;
+        }
+        errorMessage.textContent = ""; // Clear error message
+        const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+        totalAmountContainer.textContent = `Total: ${totalAmount} Rs.`;
+        totalAmountContainer.style.display = "block"; // Show the bill
+      }
+
       displayItems();
       displayCart();
     </script>

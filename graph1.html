@@ -67,11 +67,11 @@
             highlight: "#ff6f61",
           },
         },
-        { id: 2, label: "Friend A" },
-        { id: 3, label: "Friend B" },
+        { id: 2, label: "Lala G" },
+        { id: 3, label: "Jutt" },
         { id: 4, label: "Book Shop" },
         { id: 5, label: "Library" },
-        { id: 6, label: "IceCream Shop" },
+        { id: 6, label: "IceCream" },
       ]);
 
       const edges = new vis.DataSet([
@@ -126,10 +126,10 @@
         physics: {
           enabled: true,
           barnesHut: {
-            gravitationalConstant: -1000, // Adjust to control the distance between nodes
+            gravitationalConstant: -3000, // Increased repulsion for better spacing
             centralGravity: 0.1, // Pull nodes slightly toward the center
-            springLength: 170, // Length of edges between nodes, adjust for pleasant spacing
-            springConstant: 0.05, // Controls the strength of the spring between nodes
+            springLength: 200, // Increased edge length for better spacing
+            springConstant: 0.04, // Adjusted spring constant
           },
           stabilization: {
             enabled: true,
